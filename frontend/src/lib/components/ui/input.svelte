@@ -2,7 +2,7 @@
 	import { cn } from '$lib/utils/cn';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 
-	let { class: className, ...restProps }: HTMLInputAttributes = $props();
+	let { value = $bindable(), class: className, ...restProps }: HTMLInputAttributes = $props();
 </script>
 
-<input class={cn('input', className)} {...restProps} />
+<input bind:value class={cn('input', className)} {...restProps} />
