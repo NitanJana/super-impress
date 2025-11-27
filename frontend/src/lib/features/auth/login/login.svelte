@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import Button from '$lib/components/ui/button.svelte';
 	import Input from '$lib/components/ui/input.svelte';
 	import Label from '$lib/components/ui/label.svelte';
 	import AuthLayout from '$lib/layouts/auth-layout.svelte';
@@ -97,9 +98,9 @@
 				{/snippet}
 			</form.Field>
 
-			<button type="submit" class="btn mt-4 btn-neutral" aria-busy={loginMutation.isPending}>
+			<Button type="submit" class="mt-4" aria-busy={loginMutation.isPending}>
 				{loginMutation.isPending ? 'Logging in...' : 'Log in'}
-			</button>
+			</Button>
 			{#if loginMutation.isError}
 				<em role="alert" class="text-sm text-error" aria-live="polite" id="error-message">
 					{loginMutation.error?.message}
