@@ -23,7 +23,7 @@ jobs:
           echo "ACCESS_TOKEN_EXPIRE_MINUTES=30" >> backend/.env
 
       - name: Build and run backend services
-        run: docker-compose up -d --build backend
+        run: docker compose up -d --build backend
         env:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
