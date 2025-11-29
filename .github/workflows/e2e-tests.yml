@@ -17,17 +17,17 @@ jobs:
         run: |
           echo "VITE_API_BASE=http://localhost:8000" > frontend/.env
 
-          echo "DATABASE_URL=postgresql+psycopg://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@postgres:5432/${{ secrets.POSTGRES_DB }}" > backend/.env
-          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> backend/.env
+          echo "DATABASE_URL=postgresql+psycopg://postgres:postgres@postgres:5432/super_impress" > backend/.env
+          echo "SECRET_KEY=just-a-long-secret-key-is-good-enough-for-now" >> backend/.env
           echo "ALGORITHM=HS256" >> backend/.env
           echo "ACCESS_TOKEN_EXPIRE_MINUTES=30" >> backend/.env
 
       - name: Build and run backend services
         run: docker compose up -d --build backend
         env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: super_impress
 
       - name: Run database migrations
         run: docker compose exec backend uv run alembic upgrade head
