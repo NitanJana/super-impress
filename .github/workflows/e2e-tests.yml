@@ -32,15 +32,15 @@ jobs:
       - name: Run database migrations
         run: docker compose exec backend uv run alembic upgrade head
 
-      - name: Setup pnpm
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: frontend/package.json
+
+      - name: Set up pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.18.0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
+          package_json_file: frontend/package.json
 
       - name: Install frontend dependencies
         run: pnpm install --frozen-lockfile

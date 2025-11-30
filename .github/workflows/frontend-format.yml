@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - 'frontend/**'
+      - "frontend/**"
 
 jobs:
   frontend-format-check:
@@ -15,15 +15,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: frontend/package.json
+
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: "10.18.0"
-
-      - name: Set up Node
-        uses: actions/setup-node@v5
-        with:
-          node-version: 22
+          package_json_file: frontend/package.json
 
       - name: Install frontend dependencies
         run: pnpm install
