@@ -4,32 +4,76 @@
  * Super Impress
  * OpenAPI spec version: 0.1.0
  */
+import { createQuery } from '@tanstack/svelte-query';
+import type {
+	CreateQueryOptions,
+	CreateQueryResult,
+	DataTag,
+	QueryClient,
+	QueryFunction,
+	QueryKey
+} from '@tanstack/svelte-query';
+
+import axios from 'axios';
+import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 /**
  * @summary Root
  */
-export type rootApiTestGetResponse200 = {
-	data: unknown;
-	status: 200;
+export const rootApiTestGet = (options?: AxiosRequestConfig): Promise<AxiosResponse<unknown>> => {
+	return axios.get(`/api/test`, options);
 };
 
-export type rootApiTestGetResponseSuccess = rootApiTestGetResponse200 & {
-	headers: Headers;
-};
-export type rootApiTestGetResponse = rootApiTestGetResponseSuccess;
-
-export const getRootApiTestGetUrl = () => {
-	return `/api/test`;
+export const getRootApiTestGetQueryKey = () => {
+	return [`/api/test`] as const;
 };
 
-export const rootApiTestGet = async (options?: RequestInit): Promise<rootApiTestGetResponse> => {
-	const res = await fetch(getRootApiTestGetUrl(), {
-		...options,
-		method: 'GET'
-	});
+export const getRootApiTestGetQueryOptions = <
+	TData = Awaited<ReturnType<typeof rootApiTestGet>>,
+	TError = AxiosError<unknown>
+>(options?: {
+	query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof rootApiTestGet>>, TError, TData>>;
+	axios?: AxiosRequestConfig;
+}) => {
+	const { query: queryOptions, axios: axiosOptions } = options ?? {};
 
-	const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+	const queryKey = queryOptions?.queryKey ?? getRootApiTestGetQueryKey();
 
-	const data: rootApiTestGetResponse['data'] = body ? JSON.parse(body) : {};
-	return { data, status: res.status, headers: res.headers } as rootApiTestGetResponse;
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof rootApiTestGet>>> = ({ signal }) =>
+		rootApiTestGet({ signal, ...axiosOptions });
+
+	return { queryKey, queryFn, ...queryOptions } as CreateQueryOptions<
+		Awaited<ReturnType<typeof rootApiTestGet>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
+
+export type RootApiTestGetQueryResult = NonNullable<Awaited<ReturnType<typeof rootApiTestGet>>>;
+export type RootApiTestGetQueryError = AxiosError<unknown>;
+
+/**
+ * @summary Root
+ */
+
+export function createRootApiTestGet<
+	TData = Awaited<ReturnType<typeof rootApiTestGet>>,
+	TError = AxiosError<unknown>
+>(
+	options?: {
+		query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof rootApiTestGet>>, TError, TData>>;
+		axios?: AxiosRequestConfig;
+	},
+	queryClient?: QueryClient
+): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+	const queryOptions = getRootApiTestGetQueryOptions(options);
+
+	const query = createQuery(() => ({ ...queryOptions, queryClient })) as CreateQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+	query.queryKey = queryOptions.queryKey;
+
+	return query;
+}
