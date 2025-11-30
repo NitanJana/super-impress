@@ -1,17 +1,15 @@
-export async function loginApi({ email, password }: { email: string; password: string }) {
-	const formData = new FormData();
-	formData.append('username', email);
-	formData.append('password', password);
+import { loginForAccessTokenApiLoginPost } from '$lib/api/authentication/authentication';
 
-	const response = await fetch('/api/login', {
-		method: 'POST',
-		body: formData
+export async function loginApi({ email, password }: { email: string; password: string }) {
+	const response = await loginForAccessTokenApiLoginPost({
+		username: email,
+		password: password
 	});
 
-	const data = await response.json();
-	if (!response.ok) {
-		throw new Error(data.detail || 'Login failed');
+	if (response.status !== 200) {
+		const errorData = response.data as { detail?: string };
+		throw new Error(errorData.detail || 'Login failed');
 	}
 
-	return data;
+	return response.data;
 }

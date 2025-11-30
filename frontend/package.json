@@ -16,7 +16,8 @@
 		"lint": "eslint . --fix",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run && npm run test:e2e",
-		"test:e2e": "playwright test"
+		"test:e2e": "playwright test",
+		"codegen": "orval"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.4.0",

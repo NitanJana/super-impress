@@ -15,7 +15,7 @@ from app.auth.service import (
 )
 from app.database import SessionDep
 
-auth_router = APIRouter()
+auth_router = APIRouter(tags=["Authentication"])
 
 
 @auth_router.post("/register", response_model=UserPublic)

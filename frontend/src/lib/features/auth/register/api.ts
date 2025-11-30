@@ -1,19 +1,19 @@
+import { registerUserApiRegisterPost } from '$lib/api/authentication/authentication';
+
 export async function registerApi({ email, password }: { email: string; password: string }) {
-	const response = await fetch('/api/register', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({ email, password })
+	const response = await registerUserApiRegisterPost({
+		email: email,
+		password: password
 	});
 
-	const data = await response.json();
-	if (!response.ok) {
-		if (Array.isArray(data.detail)) {
-			throw new Error(data.detail[0].msg || 'Registration failed');
+	if (response.status !== 200) {
+		const errorData = response.data as { detail?: string | Array<{ msg: string }> };
+		if (Array.isArray(errorData.detail)) {
+			throw new Error(errorData.detail[0].msg || 'Registration failed');
 		} else {
-			throw new Error(data.detail || 'Registration failed');
+			throw new Error(errorData.detail || 'Registration failed');
 		}
 	}
-	return data;
+
+	return response.data;
 }
