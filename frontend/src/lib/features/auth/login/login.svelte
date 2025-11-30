@@ -1,28 +1,29 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { createLoginForAccessTokenApiLoginPost } from '$lib/api/authentication/authentication';
 	import Button from '$lib/components/ui/button.svelte';
 	import Input from '$lib/components/ui/input.svelte';
 	import Label from '$lib/components/ui/label.svelte';
 	import AuthLayout from '$lib/layouts/auth-layout.svelte';
 	import { cn } from '$lib/utils/cn';
+	import { getErrorMessage } from '$lib/utils/get-error-message';
 	import { createForm } from '@tanstack/svelte-form';
-	import { createMutation } from '@tanstack/svelte-query';
 	import z from 'zod';
 	import FieldInfo from '../field-info.svelte';
-	import { loginApi } from './api';
 
 	const loginFormSchema = z.object({
 		email: z.email('Invalid email address').trim(),
 		password: z.string().trim().min(1, 'Password is required')
 	});
 
-	const loginMutation = createMutation(() => ({
-		mutationFn: loginApi,
-		onSuccess: () => {
-			goto(resolve('/'));
+	const loginMutation = createLoginForAccessTokenApiLoginPost({
+		mutation: {
+			onSuccess: () => {
+				goto(resolve('/'));
+			}
 		}
-	}));
+	});
 
 	const form = createForm(() => ({
 		defaultValues: {
@@ -33,7 +34,12 @@
 			onSubmit: loginFormSchema
 		},
 		onSubmit: async ({ value }) => {
-			loginMutation.mutate(value);
+			loginMutation.mutate({
+				data: {
+					username: value.email,
+					password: value.password
+				}
+			});
 		}
 	}));
 </script>
@@ -103,7 +109,7 @@
 			</Button>
 			{#if loginMutation.isError}
 				<em role="alert" class="text-sm text-error" aria-live="polite" id="error-message">
-					{loginMutation.error?.message}
+					{getErrorMessage(loginMutation.error)}
 				</em>
 			{/if}
 		</fieldset>

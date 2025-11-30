@@ -6,7 +6,7 @@ export default defineConfig({
 		output: {
 			target: './src/lib/api/superimpress.ts',
 			mode: 'tags-split',
-			client: 'fetch'
+			client: 'svelte-query'
 		},
 		hooks: {
 			afterAllFilesWrite: 'prettier --write'

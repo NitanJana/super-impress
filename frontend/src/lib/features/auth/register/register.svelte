@@ -1,16 +1,16 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { createRegisterUserApiRegisterPost } from '$lib/api/authentication/authentication';
 	import Button from '$lib/components/ui/button.svelte';
 	import Input from '$lib/components/ui/input.svelte';
 	import Label from '$lib/components/ui/label.svelte';
 	import AuthLayout from '$lib/layouts/auth-layout.svelte';
 	import { cn } from '$lib/utils/cn';
+	import { getErrorMessage } from '$lib/utils/get-error-message';
 	import { createForm } from '@tanstack/svelte-form';
-	import { createMutation } from '@tanstack/svelte-query';
 	import z from 'zod';
 	import FieldInfo from '../field-info.svelte';
-	import { registerApi } from './api';
 
 	const registerFormSchema = z
 		.object({
@@ -23,12 +23,13 @@
 			path: ['confirmPassword']
 		});
 
-	const registerMutation = createMutation(() => ({
-		mutationFn: registerApi,
-		onSuccess: () => {
-			goto(resolve('/login'));
+	const registerMutation = createRegisterUserApiRegisterPost({
+		mutation: {
+			onSuccess: () => {
+				goto(resolve('/login'));
+			}
 		}
-	}));
+	});
 
 	const form = createForm(() => ({
 		defaultValues: {
@@ -38,7 +39,9 @@
 		},
 		validators: { onSubmit: registerFormSchema },
 		onSubmit: async ({ value }) => {
-			registerMutation.mutate(value);
+			registerMutation.mutate({
+				data: { email: value.email, password: value.password }
+			});
 		}
 	}));
 </script>
@@ -130,7 +133,7 @@
 
 			{#if registerMutation.isError}
 				<em role="alert" class="text-sm text-error" aria-live="polite" id="error-message">
-					{registerMutation.error?.message}
+					{getErrorMessage(registerMutation.error)}
 				</em>
 			{/if}
 		</fieldset>
