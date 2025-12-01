@@ -16,7 +16,8 @@
 		"lint": "eslint . --fix",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run && npm run test:e2e",
-		"test:e2e": "playwright test"
+		"test:e2e": "playwright test",
+		"codegen": "orval"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.4.0",
@@ -34,6 +35,7 @@
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.12.4",
 		"globals": "^16.4.0",
+		"orval": "^7.16.0",
 		"playwright": "^1.55.1",
 		"prettier": "^3.6.2",
 		"prettier-plugin-svelte": "^3.4.0",
@@ -52,14 +54,15 @@
 			"esbuild"
 		]
 	},
-	"packageManager": "pnpm@10.18.0+sha512.e804f889f1cecc40d572db084eec3e4881739f8dec69c0ff10d2d1beff9a4e309383ba27b5b750059d7f4c149535b6cd0d2cb1ed3aeb739239a4284a68f40cfa",
+	"packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a",
 	"engines": {
-		"node": "22.17.1"
+		"node": "24.11.1"
 	},
 	"dependencies": {
 		"@tanstack/svelte-form": "^1.25.0",
 		"@tanstack/svelte-query": "^6.0.5",
 		"@tanstack/svelte-query-devtools": "^6.0.0",
+		"axios": "^1.13.2",
 		"bits-ui": "^2.14.3",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
