@@ -28,7 +28,7 @@ test.describe('Registration Page', () => {
 
 		await page.getByRole('button', { name: 'Register' }).click();
 
-		await page.goto('/login');
+		await expect(page).toHaveURL('/login');
 
 		await page.getByLabel('Email').fill(uniqueEmail);
 		await page.getByLabel('Password').fill(password);
