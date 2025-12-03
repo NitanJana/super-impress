@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import { createRegisterUserApiRegisterPost } from '$lib/api/authentication/authentication';
+	import { createRegisterUser } from '$lib/api/authentication/authentication';
 	import Button from '$lib/components/ui/button.svelte';
 	import Input from '$lib/components/ui/input.svelte';
 	import Label from '$lib/components/ui/label.svelte';
@@ -23,7 +23,7 @@
 			path: ['confirmPassword']
 		});
 
-	const registerMutation = createRegisterUserApiRegisterPost({
+	const registerMutation = createRegisterUser({
 		mutation: {
 			onSuccess: () => {
 				goto(resolve('/login'));

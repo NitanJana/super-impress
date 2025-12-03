@@ -4,19 +4,19 @@
  * Super Impress
  * OpenAPI spec version: 0.1.0
  */
-export type BodyLoginForAccessTokenApiLoginPostGrantType = string | null;
+export type BodyLoginUserGrantType = string | null;
 
-export type BodyLoginForAccessTokenApiLoginPostClientId = string | null;
+export type BodyLoginUserClientId = string | null;
 
-export type BodyLoginForAccessTokenApiLoginPostClientSecret = string | null;
+export type BodyLoginUserClientSecret = string | null;
 
-export interface BodyLoginForAccessTokenApiLoginPost {
-	grant_type?: BodyLoginForAccessTokenApiLoginPostGrantType;
+export interface BodyLoginUser {
+	grant_type?: BodyLoginUserGrantType;
 	username: string;
 	password: string;
 	scope?: string;
-	client_id?: BodyLoginForAccessTokenApiLoginPostClientId;
-	client_secret?: BodyLoginForAccessTokenApiLoginPostClientSecret;
+	client_id?: BodyLoginUserClientId;
+	client_secret?: BodyLoginUserClientSecret;
 }
 
 export interface HTTPValidationError {

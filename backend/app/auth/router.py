@@ -18,7 +18,7 @@ from app.database import SessionDep
 auth_router = APIRouter(tags=["Authentication"])
 
 
-@auth_router.post("/register", response_model=UserPublic)
+@auth_router.post("/register", response_model=UserPublic, operation_id="register_user")
 async def register_user(user: UserCreate, session: SessionDep) -> UserPublic:
     existing_user = get_user_by_email(session, user.email)
     if existing_user:
@@ -30,8 +30,8 @@ async def register_user(user: UserCreate, session: SessionDep) -> UserPublic:
     return UserPublic.model_validate(db_user)
 
 
-@auth_router.post("/login")
-async def login_for_access_token(
+@auth_router.post("/login", response_model=Token, operation_id="login_user")
+async def login_user(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
     session: SessionDep,
 ) -> Token:
@@ -56,8 +56,10 @@ async def login_for_access_token(
     return Token(access_token=access_token, token_type="bearer")
 
 
-@auth_router.get("/users/me/", response_model=UserPublic)
-async def read_users_me(
+@auth_router.get(
+    "/users/me/", response_model=UserPublic, operation_id="read_current_user"
+)
+async def read_current_user(
     current_user: Annotated[User, Depends(get_current_user)],
-):
+) -> UserPublic:
     return UserPublic.model_validate(current_user)
