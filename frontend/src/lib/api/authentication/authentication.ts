@@ -26,6 +26,7 @@ import type {
 	UserPublic
 } from '../superimpress.schemas';
 
+import type { ErrorType } from '.././axios';
 import { customInstance } from '.././axios';
 
 /**
@@ -42,7 +43,7 @@ export const registerUser = (userCreate: UserCreate, signal?: AbortSignal) => {
 };
 
 export const getRegisterUserMutationOptions = <
-	TError = HTTPValidationError,
+	TError = ErrorType<HTTPValidationError>,
 	TContext = unknown
 >(options?: {
 	mutation?: CreateMutationOptions<
@@ -78,12 +79,12 @@ export const getRegisterUserMutationOptions = <
 
 export type RegisterUserMutationResult = NonNullable<Awaited<ReturnType<typeof registerUser>>>;
 export type RegisterUserMutationBody = UserCreate;
-export type RegisterUserMutationError = HTTPValidationError;
+export type RegisterUserMutationError = ErrorType<HTTPValidationError>;
 
 /**
  * @summary Register User
  */
-export const createRegisterUser = <TError = HTTPValidationError, TContext = unknown>(
+export const createRegisterUser = <TError = ErrorType<HTTPValidationError>, TContext = unknown>(
 	options?: {
 		mutation?: CreateMutationOptions<
 			Awaited<ReturnType<typeof registerUser>>,
@@ -133,7 +134,7 @@ export const loginUser = (bodyLoginUser: BodyLoginUser, signal?: AbortSignal) =>
 };
 
 export const getLoginUserMutationOptions = <
-	TError = HTTPValidationError,
+	TError = ErrorType<HTTPValidationError>,
 	TContext = unknown
 >(options?: {
 	mutation?: CreateMutationOptions<
@@ -169,12 +170,12 @@ export const getLoginUserMutationOptions = <
 
 export type LoginUserMutationResult = NonNullable<Awaited<ReturnType<typeof loginUser>>>;
 export type LoginUserMutationBody = BodyLoginUser;
-export type LoginUserMutationError = HTTPValidationError;
+export type LoginUserMutationError = ErrorType<HTTPValidationError>;
 
 /**
  * @summary Login User
  */
-export const createLoginUser = <TError = HTTPValidationError, TContext = unknown>(
+export const createLoginUser = <TError = ErrorType<HTTPValidationError>, TContext = unknown>(
 	options?: {
 		mutation?: CreateMutationOptions<
 			Awaited<ReturnType<typeof loginUser>>,
@@ -207,7 +208,7 @@ export const getReadCurrentUserQueryKey = () => {
 
 export const getReadCurrentUserQueryOptions = <
 	TData = Awaited<ReturnType<typeof readCurrentUser>>,
-	TError = unknown
+	TError = ErrorType<unknown>
 >(options?: {
 	query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof readCurrentUser>>, TError, TData>>;
 }) => {
@@ -226,7 +227,7 @@ export const getReadCurrentUserQueryOptions = <
 };
 
 export type ReadCurrentUserQueryResult = NonNullable<Awaited<ReturnType<typeof readCurrentUser>>>;
-export type ReadCurrentUserQueryError = unknown;
+export type ReadCurrentUserQueryError = ErrorType<unknown>;
 
 /**
  * @summary Read Current User
@@ -234,7 +235,7 @@ export type ReadCurrentUserQueryError = unknown;
 
 export function createReadCurrentUser<
 	TData = Awaited<ReturnType<typeof readCurrentUser>>,
-	TError = unknown
+	TError = ErrorType<unknown>
 >(
 	options?: {
 		query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof readCurrentUser>>, TError, TData>>;
@@ -267,7 +268,7 @@ export const changePassword = (passwordChange: PasswordChange, signal?: AbortSig
 };
 
 export const getChangePasswordMutationOptions = <
-	TError = HTTPValidationError,
+	TError = ErrorType<HTTPValidationError>,
 	TContext = unknown
 >(options?: {
 	mutation?: CreateMutationOptions<
@@ -303,12 +304,12 @@ export const getChangePasswordMutationOptions = <
 
 export type ChangePasswordMutationResult = NonNullable<Awaited<ReturnType<typeof changePassword>>>;
 export type ChangePasswordMutationBody = PasswordChange;
-export type ChangePasswordMutationError = HTTPValidationError;
+export type ChangePasswordMutationError = ErrorType<HTTPValidationError>;
 
 /**
  * @summary Change Password
  */
-export const createChangePassword = <TError = HTTPValidationError, TContext = unknown>(
+export const createChangePassword = <TError = ErrorType<HTTPValidationError>, TContext = unknown>(
 	options?: {
 		mutation?: CreateMutationOptions<
 			Awaited<ReturnType<typeof changePassword>>,

@@ -21,7 +21,7 @@
 	const loginMutation = createLoginUser({
 		mutation: {
 			onSuccess: (data) => {
-				auth.login(data.data.access_token);
+				auth.login(data.access_token);
 				goto(resolve('/'));
 			}
 		}

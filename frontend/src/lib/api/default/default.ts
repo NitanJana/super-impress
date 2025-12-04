@@ -4,7 +4,6 @@
  * Super Impress
  * OpenAPI spec version: 0.1.0
  */
-import { createQuery } from '@tanstack/svelte-query';
 import type {
 	CreateQueryOptions,
 	CreateQueryResult,
@@ -13,7 +12,9 @@ import type {
 	QueryFunction,
 	QueryKey
 } from '@tanstack/svelte-query';
+import { createQuery } from '@tanstack/svelte-query';
 
+import type { ErrorType } from '.././axios';
 import { customInstance } from '.././axios';
 
 /**
@@ -29,7 +30,7 @@ export const getRootApiTestGetQueryKey = () => {
 
 export const getRootApiTestGetQueryOptions = <
 	TData = Awaited<ReturnType<typeof rootApiTestGet>>,
-	TError = unknown
+	TError = ErrorType<unknown>
 >(options?: {
 	query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof rootApiTestGet>>, TError, TData>>;
 }) => {
@@ -48,7 +49,7 @@ export const getRootApiTestGetQueryOptions = <
 };
 
 export type RootApiTestGetQueryResult = NonNullable<Awaited<ReturnType<typeof rootApiTestGet>>>;
-export type RootApiTestGetQueryError = unknown;
+export type RootApiTestGetQueryError = ErrorType<unknown>;
 
 /**
  * @summary Root
@@ -56,7 +57,7 @@ export type RootApiTestGetQueryError = unknown;
 
 export function createRootApiTestGet<
 	TData = Awaited<ReturnType<typeof rootApiTestGet>>,
-	TError = unknown
+	TError = ErrorType<unknown>
 >(
 	options?: {
 		query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof rootApiTestGet>>, TError, TData>>;
