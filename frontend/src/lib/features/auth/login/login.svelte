@@ -6,6 +6,7 @@
 	import Input from '$lib/components/ui/input.svelte';
 	import Label from '$lib/components/ui/label.svelte';
 	import AuthLayout from '$lib/layouts/auth-layout.svelte';
+	import { auth } from '$lib/stores/auth';
 	import { cn } from '$lib/utils/cn';
 	import { getErrorMessage } from '$lib/utils/get-error-message';
 	import { createForm } from '@tanstack/svelte-form';
@@ -19,7 +20,8 @@
 
 	const loginMutation = createLoginUser({
 		mutation: {
-			onSuccess: () => {
+			onSuccess: (data) => {
+				auth.login(data.data.access_token);
 				goto(resolve('/'));
 			}
 		}
