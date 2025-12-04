@@ -14,14 +14,13 @@ import type {
 	QueryKey
 } from '@tanstack/svelte-query';
 
-import axios from 'axios';
-import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { customInstance } from '.././axios';
 
 /**
  * @summary Root
  */
-export const rootApiTestGet = (options?: AxiosRequestConfig): Promise<AxiosResponse<unknown>> => {
-	return axios.get(`/api/test`, options);
+export const rootApiTestGet = (signal?: AbortSignal) => {
+	return customInstance<unknown>({ url: `/api/test`, method: 'GET', signal });
 };
 
 export const getRootApiTestGetQueryKey = () => {
@@ -30,17 +29,16 @@ export const getRootApiTestGetQueryKey = () => {
 
 export const getRootApiTestGetQueryOptions = <
 	TData = Awaited<ReturnType<typeof rootApiTestGet>>,
-	TError = AxiosError<unknown>
+	TError = unknown
 >(options?: {
 	query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof rootApiTestGet>>, TError, TData>>;
-	axios?: AxiosRequestConfig;
 }) => {
-	const { query: queryOptions, axios: axiosOptions } = options ?? {};
+	const { query: queryOptions } = options ?? {};
 
 	const queryKey = queryOptions?.queryKey ?? getRootApiTestGetQueryKey();
 
 	const queryFn: QueryFunction<Awaited<ReturnType<typeof rootApiTestGet>>> = ({ signal }) =>
-		rootApiTestGet({ signal, ...axiosOptions });
+		rootApiTestGet(signal);
 
 	return { queryKey, queryFn, ...queryOptions } as CreateQueryOptions<
 		Awaited<ReturnType<typeof rootApiTestGet>>,
@@ -50,7 +48,7 @@ export const getRootApiTestGetQueryOptions = <
 };
 
 export type RootApiTestGetQueryResult = NonNullable<Awaited<ReturnType<typeof rootApiTestGet>>>;
-export type RootApiTestGetQueryError = AxiosError<unknown>;
+export type RootApiTestGetQueryError = unknown;
 
 /**
  * @summary Root
@@ -58,11 +56,10 @@ export type RootApiTestGetQueryError = AxiosError<unknown>;
 
 export function createRootApiTestGet<
 	TData = Awaited<ReturnType<typeof rootApiTestGet>>,
-	TError = AxiosError<unknown>
+	TError = unknown
 >(
 	options?: {
 		query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof rootApiTestGet>>, TError, TData>>;
-		axios?: AxiosRequestConfig;
 	},
 	queryClient?: QueryClient
 ): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
