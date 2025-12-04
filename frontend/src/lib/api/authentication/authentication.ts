@@ -21,7 +21,7 @@ import type { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import axios from 'axios';
 
 import type {
-	BodyLoginForAccessTokenApiLoginPost,
+	BodyLoginUser,
 	HTTPValidationError,
 	Token,
 	UserCreate,
@@ -31,31 +31,31 @@ import type {
 /**
  * @summary Register User
  */
-export const registerUserApiRegisterPost = (
+export const registerUser = (
 	userCreate: UserCreate,
 	options?: AxiosRequestConfig
 ): Promise<AxiosResponse<UserPublic>> => {
 	return axios.post(`/api/register`, userCreate, options);
 };
 
-export const getRegisterUserApiRegisterPostMutationOptions = <
+export const getRegisterUserMutationOptions = <
 	TError = AxiosError<HTTPValidationError>,
 	TContext = unknown
 >(options?: {
 	mutation?: CreateMutationOptions<
-		Awaited<ReturnType<typeof registerUserApiRegisterPost>>,
+		Awaited<ReturnType<typeof registerUser>>,
 		TError,
 		{ data: UserCreate },
 		TContext
 	>;
 	axios?: AxiosRequestConfig;
 }): CreateMutationOptions<
-	Awaited<ReturnType<typeof registerUserApiRegisterPost>>,
+	Awaited<ReturnType<typeof registerUser>>,
 	TError,
 	{ data: UserCreate },
 	TContext
 > => {
-	const mutationKey = ['registerUserApiRegisterPost'];
+	const mutationKey = ['registerUser'];
 	const { mutation: mutationOptions, axios: axiosOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
@@ -63,33 +63,28 @@ export const getRegisterUserApiRegisterPostMutationOptions = <
 		: { mutation: { mutationKey }, axios: undefined };
 
 	const mutationFn: MutationFunction<
-		Awaited<ReturnType<typeof registerUserApiRegisterPost>>,
+		Awaited<ReturnType<typeof registerUser>>,
 		{ data: UserCreate }
 	> = (props) => {
 		const { data } = props ?? {};
 
-		return registerUserApiRegisterPost(data, axiosOptions);
+		return registerUser(data, axiosOptions);
 	};
 
 	return { mutationFn, ...mutationOptions };
 };
 
-export type RegisterUserApiRegisterPostMutationResult = NonNullable<
-	Awaited<ReturnType<typeof registerUserApiRegisterPost>>
->;
-export type RegisterUserApiRegisterPostMutationBody = UserCreate;
-export type RegisterUserApiRegisterPostMutationError = AxiosError<HTTPValidationError>;
+export type RegisterUserMutationResult = NonNullable<Awaited<ReturnType<typeof registerUser>>>;
+export type RegisterUserMutationBody = UserCreate;
+export type RegisterUserMutationError = AxiosError<HTTPValidationError>;
 
 /**
  * @summary Register User
  */
-export const createRegisterUserApiRegisterPost = <
-	TError = AxiosError<HTTPValidationError>,
-	TContext = unknown
->(
+export const createRegisterUser = <TError = AxiosError<HTTPValidationError>, TContext = unknown>(
 	options?: {
 		mutation?: CreateMutationOptions<
-			Awaited<ReturnType<typeof registerUserApiRegisterPost>>,
+			Awaited<ReturnType<typeof registerUser>>,
 			TError,
 			{ data: UserCreate },
 			TContext
@@ -98,68 +93,59 @@ export const createRegisterUserApiRegisterPost = <
 	},
 	queryClient?: QueryClient
 ): CreateMutationResult<
-	Awaited<ReturnType<typeof registerUserApiRegisterPost>>,
+	Awaited<ReturnType<typeof registerUser>>,
 	TError,
 	{ data: UserCreate },
 	TContext
 > => {
-	const mutationOptions = getRegisterUserApiRegisterPostMutationOptions(options);
+	const mutationOptions = getRegisterUserMutationOptions(options);
 
 	return createMutation(() => ({ ...mutationOptions, queryClient }));
 };
 /**
- * @summary Login For Access Token
+ * @summary Login User
  */
-export const loginForAccessTokenApiLoginPost = (
-	bodyLoginForAccessTokenApiLoginPost: BodyLoginForAccessTokenApiLoginPost,
+export const loginUser = (
+	bodyLoginUser: BodyLoginUser,
 	options?: AxiosRequestConfig
 ): Promise<AxiosResponse<Token>> => {
 	const formUrlEncoded = new URLSearchParams();
-	if (
-		bodyLoginForAccessTokenApiLoginPost.grant_type !== undefined &&
-		bodyLoginForAccessTokenApiLoginPost.grant_type !== null
-	) {
-		formUrlEncoded.append(`grant_type`, bodyLoginForAccessTokenApiLoginPost.grant_type);
+	if (bodyLoginUser.grant_type !== undefined && bodyLoginUser.grant_type !== null) {
+		formUrlEncoded.append(`grant_type`, bodyLoginUser.grant_type);
 	}
-	formUrlEncoded.append(`username`, bodyLoginForAccessTokenApiLoginPost.username);
-	formUrlEncoded.append(`password`, bodyLoginForAccessTokenApiLoginPost.password);
-	if (bodyLoginForAccessTokenApiLoginPost.scope !== undefined) {
-		formUrlEncoded.append(`scope`, bodyLoginForAccessTokenApiLoginPost.scope);
+	formUrlEncoded.append(`username`, bodyLoginUser.username);
+	formUrlEncoded.append(`password`, bodyLoginUser.password);
+	if (bodyLoginUser.scope !== undefined) {
+		formUrlEncoded.append(`scope`, bodyLoginUser.scope);
 	}
-	if (
-		bodyLoginForAccessTokenApiLoginPost.client_id !== undefined &&
-		bodyLoginForAccessTokenApiLoginPost.client_id !== null
-	) {
-		formUrlEncoded.append(`client_id`, bodyLoginForAccessTokenApiLoginPost.client_id);
+	if (bodyLoginUser.client_id !== undefined && bodyLoginUser.client_id !== null) {
+		formUrlEncoded.append(`client_id`, bodyLoginUser.client_id);
 	}
-	if (
-		bodyLoginForAccessTokenApiLoginPost.client_secret !== undefined &&
-		bodyLoginForAccessTokenApiLoginPost.client_secret !== null
-	) {
-		formUrlEncoded.append(`client_secret`, bodyLoginForAccessTokenApiLoginPost.client_secret);
+	if (bodyLoginUser.client_secret !== undefined && bodyLoginUser.client_secret !== null) {
+		formUrlEncoded.append(`client_secret`, bodyLoginUser.client_secret);
 	}
 
 	return axios.post(`/api/login`, formUrlEncoded, options);
 };
 
-export const getLoginForAccessTokenApiLoginPostMutationOptions = <
+export const getLoginUserMutationOptions = <
 	TError = AxiosError<HTTPValidationError>,
 	TContext = unknown
 >(options?: {
 	mutation?: CreateMutationOptions<
-		Awaited<ReturnType<typeof loginForAccessTokenApiLoginPost>>,
+		Awaited<ReturnType<typeof loginUser>>,
 		TError,
-		{ data: BodyLoginForAccessTokenApiLoginPost },
+		{ data: BodyLoginUser },
 		TContext
 	>;
 	axios?: AxiosRequestConfig;
 }): CreateMutationOptions<
-	Awaited<ReturnType<typeof loginForAccessTokenApiLoginPost>>,
+	Awaited<ReturnType<typeof loginUser>>,
 	TError,
-	{ data: BodyLoginForAccessTokenApiLoginPost },
+	{ data: BodyLoginUser },
 	TContext
 > => {
-	const mutationKey = ['loginForAccessTokenApiLoginPost'];
+	const mutationKey = ['loginUser'];
 	const { mutation: mutationOptions, axios: axiosOptions } = options
 		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
 			? options
@@ -167,109 +153,97 @@ export const getLoginForAccessTokenApiLoginPostMutationOptions = <
 		: { mutation: { mutationKey }, axios: undefined };
 
 	const mutationFn: MutationFunction<
-		Awaited<ReturnType<typeof loginForAccessTokenApiLoginPost>>,
-		{ data: BodyLoginForAccessTokenApiLoginPost }
+		Awaited<ReturnType<typeof loginUser>>,
+		{ data: BodyLoginUser }
 	> = (props) => {
 		const { data } = props ?? {};
 
-		return loginForAccessTokenApiLoginPost(data, axiosOptions);
+		return loginUser(data, axiosOptions);
 	};
 
 	return { mutationFn, ...mutationOptions };
 };
 
-export type LoginForAccessTokenApiLoginPostMutationResult = NonNullable<
-	Awaited<ReturnType<typeof loginForAccessTokenApiLoginPost>>
->;
-export type LoginForAccessTokenApiLoginPostMutationBody = BodyLoginForAccessTokenApiLoginPost;
-export type LoginForAccessTokenApiLoginPostMutationError = AxiosError<HTTPValidationError>;
+export type LoginUserMutationResult = NonNullable<Awaited<ReturnType<typeof loginUser>>>;
+export type LoginUserMutationBody = BodyLoginUser;
+export type LoginUserMutationError = AxiosError<HTTPValidationError>;
 
 /**
- * @summary Login For Access Token
+ * @summary Login User
  */
-export const createLoginForAccessTokenApiLoginPost = <
-	TError = AxiosError<HTTPValidationError>,
-	TContext = unknown
->(
+export const createLoginUser = <TError = AxiosError<HTTPValidationError>, TContext = unknown>(
 	options?: {
 		mutation?: CreateMutationOptions<
-			Awaited<ReturnType<typeof loginForAccessTokenApiLoginPost>>,
+			Awaited<ReturnType<typeof loginUser>>,
 			TError,
-			{ data: BodyLoginForAccessTokenApiLoginPost },
+			{ data: BodyLoginUser },
 			TContext
 		>;
 		axios?: AxiosRequestConfig;
 	},
 	queryClient?: QueryClient
 ): CreateMutationResult<
-	Awaited<ReturnType<typeof loginForAccessTokenApiLoginPost>>,
+	Awaited<ReturnType<typeof loginUser>>,
 	TError,
-	{ data: BodyLoginForAccessTokenApiLoginPost },
+	{ data: BodyLoginUser },
 	TContext
 > => {
-	const mutationOptions = getLoginForAccessTokenApiLoginPostMutationOptions(options);
+	const mutationOptions = getLoginUserMutationOptions(options);
 
 	return createMutation(() => ({ ...mutationOptions, queryClient }));
 };
 /**
- * @summary Read Users Me
+ * @summary Read Current User
  */
-export const readUsersMeApiUsersMeGet = (
+export const readCurrentUser = (
 	options?: AxiosRequestConfig
 ): Promise<AxiosResponse<UserPublic>> => {
 	return axios.get(`/api/users/me/`, options);
 };
 
-export const getReadUsersMeApiUsersMeGetQueryKey = () => {
+export const getReadCurrentUserQueryKey = () => {
 	return [`/api/users/me/`] as const;
 };
 
-export const getReadUsersMeApiUsersMeGetQueryOptions = <
-	TData = Awaited<ReturnType<typeof readUsersMeApiUsersMeGet>>,
+export const getReadCurrentUserQueryOptions = <
+	TData = Awaited<ReturnType<typeof readCurrentUser>>,
 	TError = AxiosError<unknown>
 >(options?: {
-	query?: Partial<
-		CreateQueryOptions<Awaited<ReturnType<typeof readUsersMeApiUsersMeGet>>, TError, TData>
-	>;
+	query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof readCurrentUser>>, TError, TData>>;
 	axios?: AxiosRequestConfig;
 }) => {
 	const { query: queryOptions, axios: axiosOptions } = options ?? {};
 
-	const queryKey = queryOptions?.queryKey ?? getReadUsersMeApiUsersMeGetQueryKey();
+	const queryKey = queryOptions?.queryKey ?? getReadCurrentUserQueryKey();
 
-	const queryFn: QueryFunction<Awaited<ReturnType<typeof readUsersMeApiUsersMeGet>>> = ({
-		signal
-	}) => readUsersMeApiUsersMeGet({ signal, ...axiosOptions });
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof readCurrentUser>>> = ({ signal }) =>
+		readCurrentUser({ signal, ...axiosOptions });
 
 	return { queryKey, queryFn, ...queryOptions } as CreateQueryOptions<
-		Awaited<ReturnType<typeof readUsersMeApiUsersMeGet>>,
+		Awaited<ReturnType<typeof readCurrentUser>>,
 		TError,
 		TData
 	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
-export type ReadUsersMeApiUsersMeGetQueryResult = NonNullable<
-	Awaited<ReturnType<typeof readUsersMeApiUsersMeGet>>
->;
-export type ReadUsersMeApiUsersMeGetQueryError = AxiosError<unknown>;
+export type ReadCurrentUserQueryResult = NonNullable<Awaited<ReturnType<typeof readCurrentUser>>>;
+export type ReadCurrentUserQueryError = AxiosError<unknown>;
 
 /**
- * @summary Read Users Me
+ * @summary Read Current User
  */
 
-export function createReadUsersMeApiUsersMeGet<
-	TData = Awaited<ReturnType<typeof readUsersMeApiUsersMeGet>>,
+export function createReadCurrentUser<
+	TData = Awaited<ReturnType<typeof readCurrentUser>>,
 	TError = AxiosError<unknown>
 >(
 	options?: {
-		query?: Partial<
-			CreateQueryOptions<Awaited<ReturnType<typeof readUsersMeApiUsersMeGet>>, TError, TData>
-		>;
+		query?: Partial<CreateQueryOptions<Awaited<ReturnType<typeof readCurrentUser>>, TError, TData>>;
 		axios?: AxiosRequestConfig;
 	},
 	queryClient?: QueryClient
 ): CreateQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
-	const queryOptions = getReadUsersMeApiUsersMeGetQueryOptions(options);
+	const queryOptions = getReadCurrentUserQueryOptions(options);
 
 	const query = createQuery(() => ({ ...queryOptions, queryClient })) as CreateQueryResult<
 		TData,
