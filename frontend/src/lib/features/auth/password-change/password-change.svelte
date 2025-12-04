@@ -14,7 +14,7 @@
 
 	const passwordChangeFormSchema = z
 		.object({
-			oldPassword: z.string().trim().min(1, 'Old password is required'),
+			currentPassword: z.string().trim().min(1, 'Current password is required'),
 			newPassword: z.string().trim().min(1, 'New password is required'),
 			confirmNewPassword: z.string()
 		})
@@ -26,21 +26,21 @@
 	const changePasswordMutation = createChangePassword({
 		mutation: {
 			onSuccess: () => {
-				goto(resolve('/'));
+				goto(resolve('/login'));
 			}
 		}
 	});
 
 	const form = createForm(() => ({
 		defaultValues: {
-			oldPassword: '',
+			currentPassword: '',
 			newPassword: '',
 			confirmNewPassword: ''
 		},
 		validators: { onSubmit: passwordChangeFormSchema },
 		onSubmit: async ({ value }) => {
 			changePasswordMutation.mutate({
-				data: { old_password: value.oldPassword, new_password: value.newPassword }
+				data: { old_password: value.currentPassword, new_password: value.newPassword }
 			});
 		}
 	}));
@@ -64,9 +64,9 @@
 		>
 			<legend id="form-heading" class="fieldset-legend">Change your password</legend>
 
-			<form.Field name="oldPassword">
+			<form.Field name="currentPassword">
 				{#snippet children(field)}
-					<Label for={field.name}>Old Password</Label>
+					<Label for={field.name}>Current password</Label>
 					<Input
 						id={field.name}
 						name={field.name}
@@ -86,7 +86,7 @@
 
 			<form.Field name="newPassword">
 				{#snippet children(field)}
-					<Label for={field.name}>New Password</Label>
+					<Label for={field.name}>New password</Label>
 					<Input
 						id={field.name}
 						name={field.name}
