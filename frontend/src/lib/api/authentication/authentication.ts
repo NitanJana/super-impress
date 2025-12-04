@@ -23,6 +23,7 @@ import axios from 'axios';
 import type {
 	BodyLoginUser,
 	HTTPValidationError,
+	PasswordChange,
 	Token,
 	UserCreate,
 	UserPublic
@@ -254,3 +255,78 @@ export function createReadCurrentUser<
 
 	return query;
 }
+
+/**
+ * @summary Change Password
+ */
+export const changePassword = (
+	passwordChange: PasswordChange,
+	options?: AxiosRequestConfig
+): Promise<AxiosResponse<unknown>> => {
+	return axios.post(`/api/password/change`, passwordChange, options);
+};
+
+export const getChangePasswordMutationOptions = <
+	TError = AxiosError<HTTPValidationError>,
+	TContext = unknown
+>(options?: {
+	mutation?: CreateMutationOptions<
+		Awaited<ReturnType<typeof changePassword>>,
+		TError,
+		{ data: PasswordChange },
+		TContext
+	>;
+	axios?: AxiosRequestConfig;
+}): CreateMutationOptions<
+	Awaited<ReturnType<typeof changePassword>>,
+	TError,
+	{ data: PasswordChange },
+	TContext
+> => {
+	const mutationKey = ['changePassword'];
+	const { mutation: mutationOptions, axios: axiosOptions } = options
+		? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey }, axios: undefined };
+
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof changePassword>>,
+		{ data: PasswordChange }
+	> = (props) => {
+		const { data } = props ?? {};
+
+		return changePassword(data, axiosOptions);
+	};
+
+	return { mutationFn, ...mutationOptions };
+};
+
+export type ChangePasswordMutationResult = NonNullable<Awaited<ReturnType<typeof changePassword>>>;
+export type ChangePasswordMutationBody = PasswordChange;
+export type ChangePasswordMutationError = AxiosError<HTTPValidationError>;
+
+/**
+ * @summary Change Password
+ */
+export const createChangePassword = <TError = AxiosError<HTTPValidationError>, TContext = unknown>(
+	options?: {
+		mutation?: CreateMutationOptions<
+			Awaited<ReturnType<typeof changePassword>>,
+			TError,
+			{ data: PasswordChange },
+			TContext
+		>;
+		axios?: AxiosRequestConfig;
+	},
+	queryClient?: QueryClient
+): CreateMutationResult<
+	Awaited<ReturnType<typeof changePassword>>,
+	TError,
+	{ data: PasswordChange },
+	TContext
+> => {
+	const mutationOptions = getChangePasswordMutationOptions(options);
+
+	return createMutation(() => ({ ...mutationOptions, queryClient }));
+};

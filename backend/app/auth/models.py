@@ -59,3 +59,19 @@ class TokenData(BaseModel):
     """Token payload data schema."""
 
     email: EmailStr
+
+
+class PasswordChange(BaseModel):
+    """Schema for changing a user's password."""
+
+    old_password: str
+    new_password: Annotated[
+        str,
+        Field(
+            min_length=8,
+            max_length=15,
+            description="Must contain uppercase, lowercase, digit, and special character",
+            examples=["MyNewP@ssw0rd"],
+        ),
+        AfterValidator(password_validator),
+    ]

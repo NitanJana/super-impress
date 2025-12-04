@@ -5,9 +5,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
 from app.auth.config import auth_settings
-from app.auth.models import Token, User, UserCreate, UserPublic
+from app.auth.models import PasswordChange, Token, User, UserCreate, UserPublic
 from app.auth.service import (
     authenticate_user,
+    change_user_password,
     create_access_token,
     create_user,
     get_current_user,
@@ -63,3 +64,18 @@ async def read_current_user(
     current_user: Annotated[User, Depends(get_current_user)],
 ) -> UserPublic:
     return UserPublic.model_validate(current_user)
+
+
+@auth_router.post("/password/change", operation_id="change_password")
+async def change_password(
+    password_change: PasswordChange,
+    current_user: Annotated[User, Depends(get_current_user)],
+    session: SessionDep,
+):
+    change_user_password(
+        user=current_user,
+        old_password=password_change.old_password,
+        new_password=password_change.new_password,
+        session=session,
+    )
+    return {"message": "Password changed successfully"}
