@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { createChangePassword } from '$lib/api/authentication/authentication';
 	import Button from '$lib/components/ui/button.svelte';
 	import Input from '$lib/components/ui/input.svelte';
@@ -25,7 +26,7 @@
 	const changePasswordMutation = createChangePassword({
 		mutation: {
 			onSuccess: () => {
-				goto('/');
+				goto(resolve('/'));
 			}
 		}
 	});
