@@ -17,7 +17,7 @@
 <div class="flex flex-col">
 	<a href={resolve('/register')}>Register Page</a>
 	<a href={resolve('/login')}>Login Page</a>
-	<a href={resolve('/password-change')}>Change Password</a>
+	<a href={resolve('/change-password')}>Change Password</a>
 </div>
 
 {#if data}

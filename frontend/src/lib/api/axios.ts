@@ -1,3 +1,4 @@
+import { auth } from '$lib/stores/auth';
 import type { AxiosError, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
 
@@ -12,6 +13,19 @@ axiosInstance.interceptors.request.use((config) => {
 	}
 	return config;
 });
+
+axiosInstance.interceptors.response.use(
+	(response) => response,
+	(error: AxiosError) => {
+		if (error.response?.status === 401) {
+			auth.logout();
+			if (typeof window !== 'undefined') {
+				window.location.href = '/login';
+			}
+		}
+		return Promise.reject(error);
+	}
+);
 
 export const customInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
 	return axiosInstance(config).then(({ data }) => data);
