@@ -14,7 +14,11 @@
 </script>
 
 <h1>Dashboard Page</h1>
-<a href={resolve('/register')}>Register Page</a>
+<div class="flex flex-col">
+	<a href={resolve('/register')}>Register Page</a>
+	<a href={resolve('/login')}>Login Page</a>
+	<a href={resolve('/password-change')}>Change Password</a>
+</div>
 
 {#if data}
 	<p>{data.message}</p>

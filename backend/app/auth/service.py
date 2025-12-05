@@ -88,3 +88,19 @@ async def get_current_user(
     if user is None:
         raise credentials_exception
     return user
+
+
+def change_user_password(
+    user: User, old_password: str, new_password: str, session: SessionDep
+):
+    if not verify_password(old_password, user.password):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Incorrect old password",
+        )
+
+    user.password = get_password_hash(new_password)
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    return user

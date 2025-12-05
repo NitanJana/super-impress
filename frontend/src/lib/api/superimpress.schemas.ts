@@ -24,6 +24,19 @@ export interface HTTPValidationError {
 }
 
 /**
+ * Schema for changing a user's password.
+ */
+export interface PasswordChange {
+	old_password: string;
+	/**
+	 * Must contain uppercase, lowercase, digit, and special character
+	 * @minLength 8
+	 * @maxLength 15
+	 */
+	new_password: string;
+}
+
+/**
  * JWT token response schema.
  */
 export interface Token {

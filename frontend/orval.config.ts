@@ -6,7 +6,13 @@ export default defineConfig({
 		output: {
 			target: './src/lib/api/superimpress.ts',
 			mode: 'tags-split',
-			client: 'svelte-query'
+			client: 'svelte-query',
+			override: {
+				mutator: {
+					path: 'src/lib/api/axios.ts',
+					name: 'customInstance'
+				}
+			}
 		},
 		hooks: {
 			afterAllFilesWrite: 'prettier --write'
