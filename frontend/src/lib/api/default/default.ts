@@ -4,6 +4,7 @@
  * Super Impress
  * OpenAPI spec version: 0.1.0
  */
+import { createQuery } from '@tanstack/svelte-query';
 import type {
 	CreateQueryOptions,
 	CreateQueryResult,
@@ -12,10 +13,9 @@ import type {
 	QueryFunction,
 	QueryKey
 } from '@tanstack/svelte-query';
-import { createQuery } from '@tanstack/svelte-query';
 
-import type { ErrorType } from '.././axios';
 import { customInstance } from '.././axios';
+import type { ErrorType } from '.././axios';
 
 /**
  * @summary Root
