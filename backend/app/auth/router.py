@@ -66,16 +66,16 @@ async def read_current_user(
     return UserPublic.model_validate(current_user)
 
 
-@auth_router.post("/password/change", operation_id="change_password")
+@auth_router.post("/change-password", operation_id="change_password")
 async def change_password(
-    password_change: PasswordChange,
+    change_password: PasswordChange,
     current_user: Annotated[User, Depends(get_current_user)],
     session: SessionDep,
 ):
     change_user_password(
         user=current_user,
-        old_password=password_change.old_password,
-        new_password=password_change.new_password,
+        old_password=change_password.old_password,
+        new_password=change_password.new_password,
         session=session,
     )
     return {"message": "Password changed successfully"}

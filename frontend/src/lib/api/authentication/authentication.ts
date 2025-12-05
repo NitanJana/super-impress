@@ -4,6 +4,7 @@
  * Super Impress
  * OpenAPI spec version: 0.1.0
  */
+import { createMutation, createQuery } from '@tanstack/svelte-query';
 import type {
 	CreateMutationOptions,
 	CreateMutationResult,
@@ -15,7 +16,6 @@ import type {
 	QueryFunction,
 	QueryKey
 } from '@tanstack/svelte-query';
-import { createMutation, createQuery } from '@tanstack/svelte-query';
 
 import type {
 	BodyLoginUser,
@@ -26,8 +26,8 @@ import type {
 	UserPublic
 } from '../superimpress.schemas';
 
-import type { ErrorType } from '.././axios';
 import { customInstance } from '.././axios';
+import type { ErrorType } from '.././axios';
 
 /**
  * @summary Register User
@@ -259,7 +259,7 @@ export function createReadCurrentUser<
  */
 export const changePassword = (passwordChange: PasswordChange, signal?: AbortSignal) => {
 	return customInstance<unknown>({
-		url: `/api/password/change`,
+		url: `/api/change-password`,
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		data: passwordChange,

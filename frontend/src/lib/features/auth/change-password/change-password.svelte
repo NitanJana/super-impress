@@ -12,7 +12,7 @@
 	import z from 'zod';
 	import FieldInfo from '../field-info.svelte';
 
-	const passwordChangeFormSchema = z
+	const changePasswordFormSchema = z
 		.object({
 			currentPassword: z.string().trim().min(1, 'Current password is required'),
 			newPassword: z.string().trim().min(1, 'New password is required'),
@@ -26,7 +26,7 @@
 	const changePasswordMutation = createChangePassword({
 		mutation: {
 			onSuccess: () => {
-				goto(resolve('/login'));
+				goto(resolve('/'));
 			}
 		}
 	});
@@ -37,7 +37,7 @@
 			newPassword: '',
 			confirmNewPassword: ''
 		},
-		validators: { onSubmit: passwordChangeFormSchema },
+		validators: { onSubmit: changePasswordFormSchema },
 		onSubmit: async ({ value }) => {
 			changePasswordMutation.mutate({
 				data: { old_password: value.currentPassword, new_password: value.newPassword }
